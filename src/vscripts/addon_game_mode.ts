@@ -6,6 +6,7 @@ Object.assign(getfenv(), {
     Precache: GameMode.Precache,
 });
 
-if (GameRules.Addon) {
-    GameRules.Addon.Reload();
+if (GameRules.addon) {
+    // This code is only run after script_reload, not at startup
+    GameRules.addon.Reload();
 }

@@ -2,17 +2,17 @@ import { reloadable } from "./lib/tstl-utils";
 
 declare global {
     interface CDOTAGamerules {
-        Addon: GameMode;
+        addon?: GameMode;
     }
 }
 
 @reloadable
 export class GameMode {
-    public static Precache(this: void, context: CScriptPrecacheContext) {
+    public static Precache(this: void) {
     }
 
     public static Activate(this: void) {
-        GameRules.Addon = new GameMode();
+        GameRules.addon = new GameMode();
     }
 
     constructor() {
