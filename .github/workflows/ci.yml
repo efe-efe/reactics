@@ -3,17 +3,17 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  main:
-    name: Main
-    runs-on: ubuntu-latest
+    main:
+        name: Main
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 12
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: npm ci
-      - run: npx prettier --check .
-      - run: npm run build
-      - run: npm run lint
+        steps:
+            - uses: actions/checkout@v2
+            - name: Use Node.js 12
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 12
+            - run: npm ci
+            - run: npx prettier --check .
+            - run: npm run build
+            - run: npm run lint
