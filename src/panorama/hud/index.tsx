@@ -1,4 +1,5 @@
 import React from "react";
 import { render } from "react-panorama";
+import App from './App';
 
-render(<Label text="Hello, world!" />, $.GetContextPanel());
+render(<App />, $.GetContextPanel());

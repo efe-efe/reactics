@@ -1,6 +1,6 @@
 ## Reactics
 
-Reactics is a tactics games created entirely with React and using Dota Tools Framework as a backend service.
+Reactics is a tactics games created entirely with React and using Dota Tools Framework as a Assets source and as a backend service.
 
 ## Gameplay
 
