@@ -1,0 +1,14 @@
+.card{
+    height: 150px;
+    width: 125px;
+    border-radius: 5px;
+    border: 1px solid black;
+    background-color: gray;
+    flow-children: down;
+}
+
+.description {
+    background-color: white;
+    height: 50%;
+    align: center bottom;
+}
