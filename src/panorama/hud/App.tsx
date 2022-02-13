@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Card from "./components/Card/Card";
 import "./global.css";
 
 export default () => {
@@ -37,6 +38,7 @@ export default () => {
 
     return (
         <Panel id="root" className="root" hittest={false}>
+            <Card></Card>
         </Panel>
     )
 }
