@@ -1,7 +1,7 @@
 const path = require("path");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
-//const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 //const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 const isProduction = false;
@@ -44,7 +44,7 @@ module.exports = {
       {
         test: /\.css$/i,
         use: [
-          //MiniCssExtractPlugin.loader,
+          MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
@@ -59,7 +59,7 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          //MiniCssExtractPlugin.loader,
+          MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
@@ -76,9 +76,9 @@ module.exports = {
     ],
   },
   plugins: [
-    /*new MiniCssExtractPlugin({
+    new MiniCssExtractPlugin({
       filename: "index.css",
-    }),*/
+    }),
     new ForkTsCheckerWebpackPlugin({
       typescript: {
         configFile: path.resolve(__dirname, "tsconfig.json"),

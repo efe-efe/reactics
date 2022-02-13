@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import "./global.css";
 
 export default () => {
     useEffect(() => {
@@ -35,6 +36,7 @@ export default () => {
     }, []);
 
     return (
-        <Label text="Im in App :)" />
+        <Panel id="root" className="root" hittest={false}>
+        </Panel>
     )
 }
