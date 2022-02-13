@@ -6,7 +6,10 @@
         "lib": ["es2017"],
         "types": ["@moddota/panorama-types"],
         "moduleResolution": "node",
-        "strict": true
+        "strict": true,
+        "allowSyntheticDefaultImports": true,
+        "jsx": "react",
+        "module": "esnext"
     },
     "include": ["**/*.ts", "../common/**/*.ts"]
 }
