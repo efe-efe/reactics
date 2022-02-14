@@ -3,3 +3,4 @@
 *.md
 *.css
 index.*
+.prettierrc.json
