@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import Styles from './styles.module.css';
+import React from "react";
+import Styles from "./styles.module.css";
 
-const Card = () => {
+const Card = ({ title, health, mana, onClick }) => {
     return(
-        <Panel className={Styles.card}>
-            <Panel className={Styles.description}>
-                <Label text="This is the card description"/>
-            </Panel>
+        <Panel className={Styles.card} onactivate={onClick}>
+            <Label text={title}/>
+            <Label text={`Health = ${health}`}/>
+            <Label text={`Mana = ${mana}`}/>
         </Panel>
     )
 }
