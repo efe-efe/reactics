@@ -38,7 +38,7 @@ export default () => {
 
     return (
         <Panel id="root" className="root" hittest={false}>
-            <Card></Card>
+            <Card title={"My awesome card"} health={0} mana={0} onClick={() => {}} />
         </Panel>
     )
 }
