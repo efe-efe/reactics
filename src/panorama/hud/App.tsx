@@ -38,7 +38,16 @@ export default () => {
 
     return (
         <Panel id="root" className="root" hittest={false}>
-            <Card title={"My awesome card"} health={0} mana={0} onClick={() => {}} />
+            <Card 
+                cardId={0} 
+                title="My awesome card" 
+                health={0} 
+                mana={0} 
+                onClick={(cardId) => {
+                    $.Msg(cardId);
+                }}
+            />
         </Panel>
+        
     )
 }
