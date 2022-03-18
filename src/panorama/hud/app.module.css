@@ -1,0 +1,15 @@
+.phases {
+	flow-children: right;
+	margin-top: 20px;
+	margin-left: 50px;
+}
+
+.phases Button {
+	border: 1px solid black;
+	height: 50px;
+}
+
+.main {
+	align: center center;
+	flow-children: right;
+}

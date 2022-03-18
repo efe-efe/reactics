@@ -1,8 +1,16 @@
 import React, { useEffect } from "react";
-import Card from "./components/Card/Card";
+import { useDispatch, useSelector } from "react-redux";
 import "./global.css";
+import { RootState } from "./store";
+import Styles from "./app.module.css";
+import { GamePhases, nextPhase, previousPhase, setPhaseLocally } from "./slices/gameState";
+import "./communication";
+import { decodeFromJson } from "./utils";
 
 export default () => {
+    const phase = useSelector((state: RootState) => state.gameState.phase)
+    const dispatch = useDispatch()
+
     useEffect(() => {
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false);
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_HEROES, false);
@@ -34,19 +42,46 @@ export default () => {
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_BAR, false);
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_CUSTOMUI_BEHIND_HUD_ELEMENTS, false);
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ELEMENT_COUNT, false);
+        
+        GameEvents.Subscribe("stateUpdate", (event) => {
+            const parsedEvent = decodeFromJson(event.json);
+            const eventName = parsedEvent.eventName;
+
+            if(eventName == "nextPhase" || eventName == "previousPhase"){
+                dispatch(setPhaseLocally(parsedEvent.payload.state.phase))
+            }
+        });
     }, []);
 
     return (
         <Panel id="root" className="root" hittest={false}>
-            <Card 
-                cardId={0} 
-                title="My awesome card" 
-                health={0} 
-                mana={0} 
-                onClick={(cardId) => {
-                    $.Msg(cardId);
+            <Panel className={Styles.phases}>
+                <Label text={phase}/>
+                <Button onactivate={() => {
+                    dispatch(previousPhase())
                 }}
-            />
+                >
+                    <Label text="Previous phase"/>
+                </Button>
+                <Button onactivate={() => {
+                    dispatch(nextPhase())
+                }}
+                >
+                    <Label text="Next phase"/>
+                </Button>
+            </Panel>
+            {
+                phase == GamePhases.preGame && 
+                <Panel className={Styles.main}>
+                    <Label text="Welcome to Reactics" />
+                </Panel>
+            }
+            {
+                phase == GamePhases.pick && 
+                <Panel className={Styles.main}>
+                    <Label text="You are now on the pick phase" />
+                </Panel>
+            }
         </Panel>
         
     )
