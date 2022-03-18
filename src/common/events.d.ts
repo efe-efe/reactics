@@ -12,18 +12,35 @@
  */
 
 // To declare an event for use, add it to this table with the type of its data
+
+//Custom requests. The type means [INPUT, OUTPUT]
+interface CSRequests {
+    nextPhase: [Nothing, CScriptHTTPResponse];
+    previousPhase: [Nothing, CScriptHTTPResponse];
+}
 interface CustomGameEventDeclarations {
-    exampleEvent: ExampleEventData;
-    uiPanelClosed: UIPanelClosedEventData;
+    customRequest: CustomRequest<keyof CSRequests>;
+    customResponse: CustomResponse;
+    stateUpdate: {
+        json: Json<unknown>
+    }
+}
+interface CustomRequest<T extends keyof CSRequests> {
+    name: keyof CSRequests;
+    requestId: number;
+    json: Json<CSRequests[T][0]>;
 }
 
-// Define the type of data sent by the example_event event
-interface ExampleEventData {
-    myNumber: number;
-    myBoolean: boolean;
-    myString: string;
-    myArrayOfNumbers: number[];
+interface CustomResponse {
+    requestId: number;
+    json: Json<CustomResult>;
 }
 
-// This event has no data
-interface UIPanelClosedEventData {}
+type CustomResult =
+    | {
+          ok: true;
+          body: CSRequests[keyof CSRequests][1];
+      }
+    | {
+          ok: false;
+      };

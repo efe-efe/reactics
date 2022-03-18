@@ -22,5 +22,12 @@ module.exports = {
         "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/no-unsafe-assignment": "off",
         "@typescript-eslint/no-unsafe-member-access": "off",
-    }
+        "@typescript-eslint/restrict-plus-operands": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/restrict-template-expressions": ["error", {
+            allowAny: true,
+            allowBoolean: true,
+            allowNullish: true,
+        }],
+    },
 };
