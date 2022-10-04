@@ -15,8 +15,8 @@
 
 //Custom requests. The type means [INPUT, OUTPUT]
 interface CSRequests {
-    previousPhase: [Nothing, CScriptHTTPResponse];
-    nextPhase: [Nothing, CScriptHTTPResponse];
+    previousPhase: [Nothing, Json<ServerUpdate>];
+    nextPhase: [Nothing, Json<ServerUpdate>];
 }
 
 /**

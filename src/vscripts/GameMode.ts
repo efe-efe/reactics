@@ -8,18 +8,6 @@ declare global {
     }
 }
 
-interface ServerUpdate {
-    ok: boolean,
-    playerId: PlayerID,
-    eventName: string,
-    informAll: boolean,
-    payload: {
-      state: {
-        phase: number,
-      }
-    }
-}
-
 const SERVER_BASE_URL = "http://localhost:3000";
 
 @reloadable
@@ -55,7 +43,7 @@ export class GameMode {
                 ["eventName", "nextPhase"]
             ])
 
-            return response;
+            return response as unknown as Json<ServerUpdate>;
         })
         
         csRequestHandler("previousPhase", async id => {
@@ -64,7 +52,7 @@ export class GameMode {
                 ["eventName", "previousPhase"]
             ])
 
-            return response;
+            return response as unknown as Json<ServerUpdate>;
         })
     }
 

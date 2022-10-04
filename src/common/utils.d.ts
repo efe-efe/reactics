@@ -3,6 +3,7 @@ type Nothing = Record<string, never>;
     
 // Json is an opaque type which you can only use in encode/decode
 type Json<T> = {
+    Body: any;
     jsonBrand: unknown & T;
 };
 
