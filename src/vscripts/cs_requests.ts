@@ -1,6 +1,6 @@
 import { decodeFromJson, encodeToJson } from "./utils";
 
-type CSRequestHandler<T extends keyof CSRequests> = (player: PlayerID, input: CSRequests[T][0]) => CSRequests[T][1];
+type CSRequestHandler<T extends keyof CSRequests> = (player: PlayerID, input: CSRequests[T][0]) => CSRequests[T][1] | Promise<CSRequests[T][1]>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let handlers: Map<string, CSRequestHandler<any>>;
@@ -25,7 +25,11 @@ export function csRequestHandler<T extends keyof CSRequests>(name: T, handler: (
     handlers.set(name, handler);
 }
 
-export async function dispatchRequest<T extends keyof CSRequests>(name: T, player: PlayerID, request: CSRequests[T][0]): Promise<CSRequests[T][1]> {
+export async function dispatchRequest<T extends keyof CSRequests>(
+    name: T, 
+    player: PlayerID, 
+    request: CSRequests[T][0]
+): Promise<CSRequests[T][1]> {
     print(`[Dispatch][Player = ${player}] ${name}: ${json.encode(request)}`);
 
     const handler = handlers.get(name) as CSRequestHandler<T> | undefined;
@@ -49,6 +53,7 @@ export async function parseAndHandleCustomRequest(player: PlayerID, event: Custo
                 body: responseBody.Body
             })
         };
+
     } catch (error) {
         log.error(`Handler produced an error. Error: ${"" + error}`);
 

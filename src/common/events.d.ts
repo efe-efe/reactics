@@ -54,7 +54,10 @@ interface CustomRequest<T extends keyof CSRequests> {
 
 interface CustomResponse {
     requestId: number;
-    json: Json<CustomResult>;
+    json: Json<CustomResult> | Json< {
+        ok: true;
+        body: string;
+    }>;
 }
 
 interface CustomMessage<T extends keyof SCMessages> {

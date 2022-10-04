@@ -34,7 +34,7 @@ export class GameMode {
     }
 
     constructor() {
-        this.configure();
+        this.Configure();
         ListenToGameEvent("npc_spawned", event => this.OnNpcSpawned(event), undefined);
         ListenToGameEvent("game_rules_state_change", () => this.OnStateChange(), undefined);
         
@@ -105,7 +105,7 @@ export class GameMode {
             });
     }
 
-    private configure(): void {
+    private Configure(): void {
         GameRules.SetCustomGameTeamMaxPlayers(DotaTeam.GOODGUYS, 1);
         GameRules.SetCustomGameTeamMaxPlayers(DotaTeam.BADGUYS, 1);
         GameRules.SetHeroSelectionTime(0);
@@ -114,13 +114,12 @@ export class GameMode {
         GameRules.SetStrategyTime(0);
         GameRules.SetShowcaseTime(0);
         GameRules.SetPostGameTime(0);
+        GameRules.SetShowcaseTime(0);
     
         const gameMode = GameRules.GetGameModeEntity();
         gameMode.SetCustomGameForceHero("npc_dota_hero_wisp");
         gameMode.SetDaynightCycleDisabled(true);
         gameMode.SetAnnouncerDisabled(true);
-
-        GameRules.SetShowcaseTime(0);
     }
     
     public OnStateChange(): void {
