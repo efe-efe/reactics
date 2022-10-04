@@ -15,12 +15,33 @@
 
 //Custom requests. The type means [INPUT, OUTPUT]
 interface CSRequests {
-    nextPhase: [Nothing, CScriptHTTPResponse];
     previousPhase: [Nothing, CScriptHTTPResponse];
+    nextPhase: [Nothing, CScriptHTTPResponse];
 }
+
+/**
+ * Regular client-server events, except with proper type conversions
+ *
+ * Declare as
+ * interfaces SCMessages {
+ *     messageName: body
+ * }
+ */
+ interface SCMessages {
+    stateUpdate: {
+        eventName: string;
+        payload: {
+            state: {
+                phase: number
+            }
+        }
+    }
+ }
+
 interface CustomGameEventDeclarations {
     customRequest: CustomRequest<keyof CSRequests>;
     customResponse: CustomResponse;
+    customClientMessage: CustomMessage<keyof SCMessages>;
     stateUpdate: {
         json: Json<unknown>
     }
@@ -34,6 +55,11 @@ interface CustomRequest<T extends keyof CSRequests> {
 interface CustomResponse {
     requestId: number;
     json: Json<CustomResult>;
+}
+
+interface CustomMessage<T extends keyof SCMessages> {
+    name: T;
+    json: Json<SCMessages[T]>;
 }
 
 type CustomResult =

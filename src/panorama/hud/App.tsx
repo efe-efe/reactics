@@ -5,7 +5,7 @@ import { RootState } from "./store";
 import Styles from "./app.module.css";
 import { GamePhases, nextPhase, previousPhase, setPhaseLocally } from "./slices/gameState";
 import "./communication";
-import { decodeFromJson } from "./utils";
+import { subscribeToMessage } from "./communication";
 
 export default () => {
     const phase = useSelector((state: RootState) => state.gameState.phase)
@@ -43,14 +43,13 @@ export default () => {
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_CUSTOMUI_BEHIND_HUD_ELEMENTS, false);
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ELEMENT_COUNT, false);
         
-        GameEvents.Subscribe("stateUpdate", (event) => {
-            const parsedEvent = decodeFromJson(event.json);
-            const eventName = parsedEvent.eventName;
+        subscribeToMessage("stateUpdate", (event) => {
+            const eventName = event.eventName;
 
             if(eventName == "nextPhase" || eventName == "previousPhase"){
-                dispatch(setPhaseLocally(parsedEvent.payload.state.phase))
+                dispatch(setPhaseLocally(event.payload.state.phase))
             }
-        });
+        })
     }, []);
 
     return (

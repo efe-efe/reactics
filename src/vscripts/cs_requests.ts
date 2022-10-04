@@ -21,7 +21,7 @@ function errorLogger(event: string, player: PlayerID) {
     };
 }
 
-export function csRequestHandler<T extends keyof CSRequests>(name: T, handler: CSRequestHandler<T>) {
+export function csRequestHandler<T extends keyof CSRequests>(name: T, handler: (id: PlayerID) => CSRequests[T][1] | Promise<CSRequests[T][1]>) {
     handlers.set(name, handler);
 }
 

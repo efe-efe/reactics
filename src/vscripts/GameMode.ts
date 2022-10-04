@@ -46,6 +46,7 @@ export class GameMode {
             if (!response) return;
 
             CustomGameEventManager.Send_ServerToPlayer(player, "customResponse", response);
+            return undefined;
         });
 
         csRequestHandler("nextPhase", async id => {

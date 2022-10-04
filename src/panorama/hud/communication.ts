@@ -16,6 +16,14 @@ GameEvents.Subscribe("customResponse", event => {
     }
 });
 
+export function subscribeToMessage<T extends keyof SCMessages>(message: T, handler: (body: SCMessages[T]) => void) {
+    GameEvents.Subscribe("customClientMessage", event => {
+        if (event.name == message) {
+            handler(decodeFromJson(event.json) as SCMessages[T]);
+        }
+    });
+}
+
 export function csRequest<T extends keyof CSRequests>(request: T, body: CSRequests[T][0]): Promise<CSRequests[T][1]> {
     const requestId = requestIdSequence++;
 
