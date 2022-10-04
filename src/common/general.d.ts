@@ -13,3 +13,15 @@ interface UnitData {
     name: string,
     level: number
 }
+
+interface ServerUpdate {
+    ok: boolean,
+    playerId: PlayerID,
+    eventName: string,
+    informAll: boolean,
+    payload: {
+      state: {
+        phase: number,
+      }
+    }
+}

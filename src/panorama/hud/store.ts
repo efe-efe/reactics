@@ -1,9 +1,9 @@
-import { configureStore } from "@reduxjs/toolkit"
-import counterReducer from "./slices/counterSlice"
+import { configureStore } from "@reduxjs/toolkit";
+import gameStateReducer from "./slices/gameState";
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer //TODO: Delete when creating a real one and this one no longer serves as reference
+    gameState: gameStateReducer,
   },
 })
 

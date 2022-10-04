@@ -12,18 +12,64 @@
  */
 
 // To declare an event for use, add it to this table with the type of its data
+
+//Custom requests. The type means [INPUT, OUTPUT]
+interface CSRequests {
+    previousPhase: [Nothing, Json<ServerUpdate>];
+    nextPhase: [Nothing, Json<ServerUpdate>];
+}
+
+/**
+ * Regular client-server events, except with proper type conversions
+ *
+ * Declare as
+ * interfaces SCMessages {
+ *     messageName: body
+ * }
+ */
+ interface SCMessages {
+    stateUpdate: {
+        eventName: string;
+        payload: {
+            state: {
+                phase: number
+            }
+        }
+    }
+ }
+
 interface CustomGameEventDeclarations {
-    exampleEvent: ExampleEventData;
-    uiPanelClosed: UIPanelClosedEventData;
+    customRequest: CustomRequest<keyof CSRequests>;
+    customResponse: CustomResponse;
+    customClientMessage: CustomMessage<keyof SCMessages>;
+    stateUpdate: {
+        json: Json<unknown>
+    }
+}
+interface CustomRequest<T extends keyof CSRequests> {
+    name: keyof CSRequests;
+    requestId: number;
+    json: Json<CSRequests[T][0]>;
 }
 
-// Define the type of data sent by the example_event event
-interface ExampleEventData {
-    myNumber: number;
-    myBoolean: boolean;
-    myString: string;
-    myArrayOfNumbers: number[];
+interface CustomResponse {
+    requestId: number;
+    json: Json<CustomResult> | Json< {
+        ok: true;
+        body: string;
+    }>;
 }
 
-// This event has no data
-interface UIPanelClosedEventData {}
+interface CustomMessage<T extends keyof SCMessages> {
+    name: T;
+    json: Json<SCMessages[T]>;
+}
+
+type CustomResult =
+    | {
+          ok: true;
+          body: CSRequests[keyof CSRequests][1];
+      }
+    | {
+          ok: false;
+      };
