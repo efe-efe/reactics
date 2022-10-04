@@ -25,34 +25,27 @@ export function csRequestHandler<T extends keyof CSRequests>(name: T, handler: (
     handlers.set(name, handler);
 }
 
-export async function dispatchRequest<T extends keyof CSRequests>(
-    name: T, 
-    player: PlayerID, 
-    request: CSRequests[T][0]
-): Promise<CSRequests[T][1]> {
-    print(`[Dispatch][Player = ${player}] ${name}: ${json.encode(request)}`);
-
-    const handler = handlers.get(name) as CSRequestHandler<T> | undefined;
-    if (!handler) {
-        throw `Handler not found. Register it with csRequestHandler("${name}", (player, data) => { /* code */ });`;
-    } else {
-        return await handler(player, request);
-    }
-}
-
 export async function parseAndHandleCustomRequest(player: PlayerID, event: CustomRequest<keyof CSRequests>): Promise<CustomResponse | undefined> {
     const log = errorLogger(event.name, player);
     const body = decodeFromJson(event.json);
 
     try {
-        const responseBody = await dispatchRequest(event.name, player, body);
-        return {
-            requestId: event.requestId,
-            json: encodeToJson({
-                ok: true,
-                body: responseBody.Body
-            })
-        };
+        print(`[Dispatch][Player = ${player}] ${event.name}: ${json.encode(body)}`);
+
+        const handler = handlers.get(event.name);
+        if (!handler) {
+            throw `Handler not found. Register it with csRequestHandler("${event.name}", (player, data) => { /* code */ });`;
+        } else {
+            
+            const responseBody = await handler(player, json.encode(body));
+            return {
+                requestId: event.requestId,
+                json: encodeToJson({
+                    ok: true,
+                    body: responseBody.Body
+                })
+            };
+        }
 
     } catch (error) {
         log.error(`Handler produced an error. Error: ${"" + error}`);
