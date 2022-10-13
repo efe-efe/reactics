@@ -22,4 +22,3 @@ panorama_debugger.cfg
 package-lock.json
 content/panorama/layout/custom_game/hud/index.css
 content/panorama/layout/custom_game/hud/index.js
-src/client/dist

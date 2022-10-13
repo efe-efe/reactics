@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"outDir": "./web/dist",
+		"target": "es2017",
+		"lib": ["es2017", "dom"],
+		"types": ["@types/react-dom"],
+		"moduleResolution": "node",
+		"strict": true,
+		"allowSyntheticDefaultImports": true,
+		"jsx": "react",
+		"module": "esnext"
+	},
+	"include": ["web.index.tsx", "./App.tsx"]
+}

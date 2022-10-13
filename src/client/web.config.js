@@ -2,7 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: path.join(__dirname, "web/index.js"),
+  entry: path.join(__dirname, "web.index.tsx"),
   output: {
     path: path.join(__dirname, "/dist"),
     filename: "bundle.js",
@@ -12,6 +12,10 @@ module.exports = {
       template: path.join(__dirname, "/web/index.html"),
     }),
   ],
+  resolve: {
+    extensions: [".ts", ".tsx", "..."],
+    symlinks: false,
+  },
   devServer: {
     port: 3030,
     historyApiFallback: true
@@ -19,14 +23,11 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ['@babel/preset-env', '@babel/preset-react']
-          }
-        },
+        test: /\.tsx?$/,
+        loader: "ts-loader",
+        options: {
+          configFile: "web.tsconfig.json"
+        }
       },
       {
         test: /\.(sa|sc|c)ss$/,
