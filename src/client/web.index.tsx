@@ -2,21 +2,25 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 
-function initialize(){
-    console.log("Initializing app...")
-}
-
-const Panel: React.FunctionComponent<{}> = props => {
-    return <div>{props.children}</div>
+const Panel: React.FunctionComponent<{className?: string; id?: string; hittest?: boolean}> = props => {
+    return <div id={props.id} className={props.className}>{props.children}</div>
 }
 
 const Label: React.FunctionComponent<{text: string}> = props => {
     return <>{props.text}</>;
 }
 
+const Button: React.FunctionComponent<{onactivate: () => void}> = props => {
+    return <button onClick={props.onactivate}>{props.children}</button>;
+}
+
+const log = (message: any) => console.log(message);
+
 ReactDOM.render(
 <App
-    initialize={initialize}
+    initialize={() => {}}
     Panel={Panel}
     Label={Label}
+    Button={Button}
+    log={log}
 />, document.getElementById("app"))

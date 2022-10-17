@@ -35,10 +35,14 @@ function initialize(){
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ELEMENT_COUNT, false);
 }
 
+const log = (message: string) => $.Msg(message);
+
 render(
     <App
         initialize={initialize}
         Panel={Panel}
         Label={Label}
+        Button={Button}
+        log={log}
     />,
 $.GetContextPanel());

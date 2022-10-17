@@ -9,7 +9,7 @@
         "build:vscripts": "tstl --project src/vscripts/tsconfig.json",
         "dev": "run-p dev:*",
         "dev:panorama": "node --preserve-symlinks node_modules/webpack/bin/webpack.js --config src/client/panorama.config.js --watch",
-        "dev:web": "node --preserve-symlinks node_modules/webpack/bin/webpack.js serve --config src/client/web.config.js --mode=development",
+        "dev:web": "webpack-dev-server --open --config src/client/web.config.js --mode development",
         "dev:vscripts": "tstl --project src/vscripts/tsconfig.json --watch",
         "lint": "eslint . --ext .ts --max-warnings 0"
     },
