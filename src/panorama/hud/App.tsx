@@ -8,8 +8,8 @@ import "./communication";
 import { subscribeToMessage } from "./communication";
 
 export default () => {
-    const phase = useSelector((state: RootState) => state.gameState.phase)
-    const dispatch = useDispatch()
+    const phase = useSelector((state: RootState) => state.gameState.phase);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false);
@@ -42,46 +42,45 @@ export default () => {
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_BAR, false);
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_CUSTOMUI_BEHIND_HUD_ELEMENTS, false);
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ELEMENT_COUNT, false);
-        
-        subscribeToMessage("stateUpdate", (event) => {
+
+        subscribeToMessage("stateUpdate", event => {
             const eventName = event.eventName;
 
-            if(eventName == "nextPhase" || eventName == "previousPhase"){
-                dispatch(setPhaseLocally(event.payload.state.phase))
+            if (eventName == "nextPhase" || eventName == "previousPhase") {
+                dispatch(setPhaseLocally(event.payload.state.phase));
             }
-        })
+        });
     }, []);
 
     return (
         <Panel id="root" className="root" hittest={false}>
             <Panel className={Styles.phases}>
-                <Label text={phase}/>
-                <Button onactivate={() => {
-                    dispatch(previousPhase())
-                }}
+                <Label text={phase} />
+                <Button
+                    onactivate={() => {
+                        dispatch(previousPhase());
+                    }}
                 >
-                    <Label text="Previous phase"/>
+                    <Label text="Previous phase" />
                 </Button>
-                <Button onactivate={() => {
-                    dispatch(nextPhase())
-                }}
+                <Button
+                    onactivate={() => {
+                        dispatch(nextPhase());
+                    }}
                 >
-                    <Label text="Next phase"/>
+                    <Label text="Next phase" />
                 </Button>
             </Panel>
-            {
-                phase == GamePhases.preGame && 
+            {phase == GamePhases.preGame && (
                 <Panel className={Styles.main}>
                     <Label text="Welcome to Reactics" />
                 </Panel>
-            }
-            {
-                phase == GamePhases.pick && 
+            )}
+            {phase == GamePhases.pick && (
                 <Panel className={Styles.main}>
                     <Label text="You are now on the pick phase" />
                 </Panel>
-            }
+            )}
         </Panel>
-        
-    )
-}
+    );
+};

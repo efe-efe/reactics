@@ -14,8 +14,7 @@ const SERVER_BASE_URL = "http://localhost:3000";
 export class GameMode {
     players: PlayerID[] = [];
 
-    public static Precache(this: void) {
-    }
+    public static Precache(this: void) {}
 
     public static Activate(this: void) {
         GameRules.addon = new GameMode();
@@ -25,7 +24,7 @@ export class GameMode {
         this.Configure();
         ListenToGameEvent("npc_spawned", event => this.OnNpcSpawned(event), undefined);
         ListenToGameEvent("game_rules_state_change", () => this.OnStateChange(), undefined);
-        
+
         //This links requests with the "csRequestHandler" handler
         //When a csRequestHandler returns something, we fire the "customResponse" event
         //So the client can manage it like an async call
@@ -41,55 +40,55 @@ export class GameMode {
             const response = await sendRequest("POST", `${SERVER_BASE_URL}/action`, [
                 ["playerId", id.toString()],
                 ["eventName", "nextPhase"]
-            ])
+            ]);
 
             return response as unknown as Json<ServerUpdate>;
-        })
-        
+        });
+
         csRequestHandler("previousPhase", async id => {
             const response = await sendRequest("POST", `${SERVER_BASE_URL}/action`, [
                 ["playerId", id.toString()],
                 ["eventName", "previousPhase"]
-            ])
+            ]);
 
             return response as unknown as Json<ServerUpdate>;
-        })
+        });
     }
 
     private LongPolling(playerId: PlayerID) {
-        print(`Player ${playerId} is subscribing ...`)
-        sendRequest("POST", `${SERVER_BASE_URL}/subscribe`, [
-            ["playerId", playerId.toString()],
-        ])
-            .then((response) => {
+        print(`Player ${playerId} is subscribing ...`);
+        sendRequest("POST", `${SERVER_BASE_URL}/subscribe`, [["playerId", playerId.toString()]])
+            .then(response => {
                 const parsedBody: ServerUpdate = decodeFromJson(response.Body as unknown as Json<ServerUpdate>);
-                const clientResponse = encodeToJson({ 
+                const clientResponse = encodeToJson({
                     payload: parsedBody.payload,
-                    eventName: parsedBody.eventName 
+                    eventName: parsedBody.eventName
                 });
 
                 print("Dota server has received an update from server");
 
-                if(parsedBody.informAll){
+                if (parsedBody.informAll) {
                     CustomGameEventManager.Send_ServerToAllClients("stateUpdate", {
                         json: clientResponse
                     } as never);
                 } else {
                     const player = PlayerResource.GetPlayer(playerId);
-                    if(player){
+                    if (player) {
                         CustomGameEventManager.Send_ServerToPlayer(player, "stateUpdate", {
-                            json: clientResponse,
+                            json: clientResponse
                         } as never);
                     } else {
-                        print(`Trying to send a message, but Player ${playerId} wasn't found`)
+                        print(`Trying to send a message, but Player ${playerId} wasn't found`);
                     }
                 }
-            }).catch(() => {
-                print(`Player ${playerId} couldn't connect, trying again in 3 seconds...`)
-            }).finally(() => {
+            })
+            .catch(() => {
+                print(`Player ${playerId} couldn't connect, trying again in 3 seconds...`);
+            })
+            .finally(() => {
                 Timers.CreateTimer(3.0, () => {
-                    this.LongPolling(playerId);  
-                })
+                    this.LongPolling(playerId);
+                });
             });
     }
 
@@ -103,16 +102,16 @@ export class GameMode {
         GameRules.SetShowcaseTime(0);
         GameRules.SetPostGameTime(0);
         GameRules.SetShowcaseTime(0);
-    
+
         const gameMode = GameRules.GetGameModeEntity();
         gameMode.SetCustomGameForceHero("npc_dota_hero_wisp");
         gameMode.SetDaynightCycleDisabled(true);
         gameMode.SetAnnouncerDisabled(true);
     }
-    
+
     public OnStateChange(): void {
         const state = GameRules.State_Get();
-        
+
         if (state == GameState.CUSTOM_GAME_SETUP) {
             // Need to wait a frame otherwise player in tools doesn't connect
             Timers.CreateTimer(() => {
@@ -125,7 +124,7 @@ export class GameMode {
         }
     }
 
-    private RegisterPlayer(playerId: PlayerID){
+    private RegisterPlayer(playerId: PlayerID) {
         const name = PlayerResource.GetPlayerName(playerId);
         print(`Registering player ${playerId}: ${name} ...`);
         this.players.push(playerId);

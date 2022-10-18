@@ -4,24 +4,24 @@
  */
 
 interface Color {
-    r: number,
-    g: number,
-    b: number
+    r: number;
+    g: number;
+    b: number;
 }
 
 interface UnitData {
-    name: string,
-    level: number
+    name: string;
+    level: number;
 }
 
 interface ServerUpdate {
-    ok: boolean,
-    playerId: PlayerID,
-    eventName: string,
-    informAll: boolean,
+    ok: boolean;
+    playerId: PlayerID;
+    eventName: string;
+    informAll: boolean;
     payload: {
-      state: {
-        phase: number,
-      }
-    }
+        state: {
+            phase: number;
+        };
+    };
 }

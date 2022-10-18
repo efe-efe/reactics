@@ -11,7 +11,7 @@ export class BaseModifier {
         target: CDOTA_BaseNPC,
         caster?: CDOTA_BaseNPC,
         ability?: CDOTABaseAbility,
-        modifierTable?: object,
+        modifierTable?: object
     ): InstanceType<T> {
         return target.AddNewModifier(caster, ability, this.name, modifierTable) as any;
     }

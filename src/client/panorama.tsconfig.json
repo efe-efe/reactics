@@ -1,18 +1,14 @@
 {
-	"compilerOptions": {
-		"outDir": "../../content/panorama/scripts/custom_game",
-		"target": "es2017",
-		"lib": ["es2017"],
-		"types": ["@moddota/panorama-types"],
-		"moduleResolution": "node",
-		"strict": true,
-		"allowSyntheticDefaultImports": true,
-		"jsx": "react",
-		"module": "esnext"
-	},
-	"include": [
-		"node_modules/@moddota/panorama-types/index.d.ts",
-		"panorama.index.tsx",
-		"../common/**/*.ts"
-	]
+    "compilerOptions": {
+        "outDir": "../../content/panorama/scripts/custom_game",
+        "target": "es2017",
+        "lib": ["es2017"],
+        "types": ["@moddota/panorama-types"],
+        "moduleResolution": "node",
+        "strict": true,
+        "allowSyntheticDefaultImports": true,
+        "jsx": "react",
+        "module": "esnext"
+    },
+    "include": ["node_modules/@moddota/panorama-types/index.d.ts", "panorama.index.tsx", "../common/**/*.ts"]
 }

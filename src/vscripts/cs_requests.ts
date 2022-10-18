@@ -1,6 +1,9 @@
 import { decodeFromJson, encodeToJson } from "./utils";
 
-type CSRequestHandler<T extends keyof CSRequests> = (player: PlayerID, input: CSRequests[T][0]) => CSRequests[T][1] | Promise<CSRequests[T][1]>;
+type CSRequestHandler<T extends keyof CSRequests> = (
+    player: PlayerID,
+    input: CSRequests[T][0]
+) => CSRequests[T][1] | Promise<CSRequests[T][1]>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let handlers: Map<string, CSRequestHandler<any>>;
@@ -21,11 +24,17 @@ function errorLogger(event: string, player: PlayerID) {
     };
 }
 
-export function csRequestHandler<T extends keyof CSRequests>(name: T, handler: (id: PlayerID) => CSRequests[T][1] | Promise<CSRequests[T][1]>) {
+export function csRequestHandler<T extends keyof CSRequests>(
+    name: T,
+    handler: (id: PlayerID) => CSRequests[T][1] | Promise<CSRequests[T][1]>
+) {
     handlers.set(name, handler);
 }
 
-export async function parseAndHandleCustomRequest(player: PlayerID, event: CustomRequest<keyof CSRequests>): Promise<CustomResponse | undefined> {
+export async function parseAndHandleCustomRequest(
+    player: PlayerID,
+    event: CustomRequest<keyof CSRequests>
+): Promise<CustomResponse | undefined> {
     const log = errorLogger(event.name, player);
     const body = decodeFromJson(event.json);
 
@@ -36,7 +45,6 @@ export async function parseAndHandleCustomRequest(player: PlayerID, event: Custo
         if (!handler) {
             throw `Handler not found. Register it with csRequestHandler("${event.name}", (player, data) => { /* code */ });`;
         } else {
-            
             const responseBody = await handler(player, json.encode(body));
             return {
                 requestId: event.requestId,
@@ -46,7 +54,6 @@ export async function parseAndHandleCustomRequest(player: PlayerID, event: Custo
                 })
             };
         }
-
     } catch (error) {
         log.error(`Handler produced an error. Error: ${"" + error}`);
 

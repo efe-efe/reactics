@@ -27,24 +27,24 @@ interface CSRequests {
  *     messageName: body
  * }
  */
- interface SCMessages {
+interface SCMessages {
     stateUpdate: {
         eventName: string;
         payload: {
             state: {
-                phase: number
-            }
-        }
-    }
- }
+                phase: number;
+            };
+        };
+    };
+}
 
 interface CustomGameEventDeclarations {
     customRequest: CustomRequest<keyof CSRequests>;
     customResponse: CustomResponse;
     customClientMessage: CustomMessage<keyof SCMessages>;
     stateUpdate: {
-        json: Json<unknown>
-    }
+        json: Json<unknown>;
+    };
 }
 interface CustomRequest<T extends keyof CSRequests> {
     name: keyof CSRequests;
@@ -54,10 +54,12 @@ interface CustomRequest<T extends keyof CSRequests> {
 
 interface CustomResponse {
     requestId: number;
-    json: Json<CustomResult> | Json< {
-        ok: true;
-        body: string;
-    }>;
+    json:
+        | Json<CustomResult>
+        | Json<{
+              ok: true;
+              body: string;
+          }>;
 }
 
 interface CustomMessage<T extends keyof SCMessages> {

@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "react-panorama";
 import App from "./App";
 
-function initialize(){
+function initialize() {
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false);
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_HEROES, false);
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_FLYOUT_SCOREBOARD, false);
@@ -37,12 +37,4 @@ function initialize(){
 
 const log = (message: string) => $.Msg(message);
 
-render(
-    <App
-        initialize={initialize}
-        Panel={Panel}
-        Label={Label}
-        Button={Button}
-        log={log}
-    />,
-$.GetContextPanel());
+render(<App initialize={initialize} Panel={Panel} Label={Label} Button={Button} log={log} />, $.GetContextPanel());

@@ -14,7 +14,10 @@ export function decodeFromJson<T>(value: Json<T>) {
 
 export function registerEventListener<T extends keyof CustomGameEventDeclarations>(
     event: T,
-    handler: (player: CDOTAPlayer, data: CustomNetworkedData<CCustomGameEventManager.InferEventType<T, object>>) => Promise<CustomResponse | undefined>
+    handler: (
+        player: CDOTAPlayer,
+        data: CustomNetworkedData<CCustomGameEventManager.InferEventType<T, object>>
+    ) => Promise<CustomResponse | undefined>
 ) {
     CustomGameEventManager.RegisterListener(event, (_, eventData) => {
         const player = PlayerResource.GetPlayer(eventData.PlayerID);
@@ -27,21 +30,21 @@ export function registerEventListener<T extends keyof CustomGameEventDeclaration
     });
 }
 
-export async function sendRequest(method: "GET" | "POST", url: string, params: [string, string][] = []){
+export async function sendRequest(method: "GET" | "POST", url: string, params: [string, string][] = []) {
     const request = CreateHTTPRequestScriptVM(method, url);
-    for(const param of [["source", "dota"], ...params]){
+    for (const param of [["source", "dota"], ...params]) {
         request.SetHTTPRequestGetOrPostParameter(param[0], param[1]);
     }
 
     const result = await new Promise<CScriptHTTPResponse>((resolve, reject) => {
-        request.Send((response) => {
-            if(response.StatusCode == 0){
+        request.Send(response => {
+            if (response.StatusCode == 0) {
                 reject();
             } else {
                 resolve(response);
             }
         });
-    })
+    });
 
     return result;
 }

@@ -3,7 +3,7 @@ import { GameMode } from "./GameMode";
 
 Object.assign(getfenv(), {
     Activate: GameMode.Activate,
-    Precache: GameMode.Precache,
+    Precache: GameMode.Precache
 });
 
 if (GameRules.addon) {

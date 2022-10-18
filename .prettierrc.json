@@ -1,9 +1,6 @@
 {
-	"useTabs": true,
-	"trailingComma": "all",
-	"tabWidth": 2,
-	"semi": false,
-	"bracketSameLine": false,
-	"arrowParens": "avoid",
-	"requirePragma": true
+    "arrowParens": "avoid",
+    "printWidth": 140,
+    "bracketSpacing": true,
+    "trailingComma": "none"
 }
