@@ -11,6 +11,7 @@
         "dev:panorama": "node --preserve-symlinks node_modules/webpack/bin/webpack.js --config src/client/panorama.config.js --watch",
         "dev:web": "webpack-dev-server --open --config src/client/web.config.js --mode development",
         "dev:vscripts": "tstl --project src/vscripts/tsconfig.json --watch",
+        "dev:server": "nodemon src/server/app.js",
         "lint": "eslint . --ext .ts --max-warnings 0"
     },
     "devDependencies": {
@@ -26,6 +27,7 @@
         "eslint-config-prettier": "^8.3.0",
         "file-loader": "6.2.0",
         "fork-ts-checker-webpack-plugin": "^7.2.1",
+        "nodemon": "^2.0.20",
         "terser-webpack-plugin": "^5.3.1",
         "ts-loader": "^9.2.5",
         "typescript": "^4.5.5",
@@ -40,6 +42,7 @@
         "@moddota/panorama-types": "^1.12.0",
         "@reduxjs/toolkit": "^1.7.2",
         "@types/react": "17.0.19",
+        "cors": "^2.8.5",
         "express": "^4.17.3",
         "fs-extra": "^9.0.0",
         "html-webpack-plugin": "^5.5.0",

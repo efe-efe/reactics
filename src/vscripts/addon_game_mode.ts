@@ -7,6 +7,5 @@ Object.assign(getfenv(), {
 });
 
 if (GameRules.addon) {
-    // This code is only run after script_reload, not at startup
     GameRules.addon.Reload();
 }

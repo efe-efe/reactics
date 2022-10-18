@@ -1,7 +1,10 @@
 const express = require("express")
 const bodyParser = require("body-parser");
+const cors = require('cors');
 const PORT = 3000;
 const app = express();
+
+app.use(cors());
 
 let connections = [];
 const state = {
@@ -24,7 +27,7 @@ const actionHandlers = {
 function InformSubscribers(response, filteredConnections) {
   for (const connection of filteredConnections) {
     console.log(`Informing about the state to Player ${connection.playerId} (${connection.source})`);
-    if(!connection.handler){
+    if (!connection.handler) {
       console.log("The connection is broken!")
     } else {
       const handler = connection.handler;
@@ -67,10 +70,10 @@ app.post("/subscribe", (req, res, next) => {
   const source = req.body.source;
   const playerId = req.body.playerId;
   const connection = connections.find((connection) => connection.playerId == playerId)
-  
+
   console.log(`Player ${playerId} from ${source} is trying to subscribe`);
 
-  if(connection){
+  if (connection) {
     connection.handler = res;
   } else {
     connections.push({
@@ -79,7 +82,7 @@ app.post("/subscribe", (req, res, next) => {
       handler: res
     })
   }
-  
+
   console.log("Connections: ", connections.length);
 })
 

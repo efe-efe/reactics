@@ -5,7 +5,7 @@ export default ({ initialize, Panel, Label, Button, log }: {
     initialize: () => void;
     Panel: React.FunctionComponent<{id?: string; className?: string; hittest?: boolean}>
     Label: React.FunctionComponent<{text: string}>
-    Button: React.FunctionComponent<{onactivate: () => void}>
+    Button: React.FunctionComponent<{onactivate: () => any}>
     log: (message: any) => void
 }) => {
     useEffect(() => {
@@ -16,8 +16,7 @@ export default ({ initialize, Panel, Label, Button, log }: {
         <Panel id="root" className="root" hittest={false}>
             <Panel>
                 <Label text={"phase"}/>
-                <Button onactivate={() => log("Heeey")}
-                >
+                <Button onactivate={() => log("Heeey")}>
                     <Label text="Previous phase"/>
                 </Button>
                 <Button onactivate={() => log("Heeey")}

@@ -17,7 +17,7 @@ module.exports = {
     symlinks: false,
   },
   devServer: {
-    port: 3000,
+    port: 3030,
     historyApiFallback: true
   },
   module: {
