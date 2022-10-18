@@ -1,39 +1,58 @@
-# ModDota template
+# REACTICS
 
-A template for Dota 2 Custom Games built with modern technologies.
+## Architecture
 
-[This tutorial](https://moddota.com/scripting/Typescript/typescript-introduction/) explains how to set up and use the template.
+* State Server (Express): Mantains and modifies the state of the game.
+* Web Client (React)
+* Dota Server (LUA)
+* Dota Client (React + Panorama)
 
-The template includes:
+## Communication
 
-- [TypeScript for Panorama](https://moddota.com/panorama/introduction-to-panorama-ui-with-typescript)
-- [TypeScript for VScripts](https://typescripttolua.github.io/)
-- Simple commands to build and launch your custom game
-- [Continuous Integration](#continuous-integration) support
+The game can be established in one of the following ways:
+* Both players uses the `Web Client`.
+* Both players uses the `Dota Client` (and therefore both are hold on the `Dota Server`).
+* One player uses the `Web Client` and the other uses the `Dota Client`.
 
-## Getting Started
+## Dota
+### Client
+* The Client state is hold on the Redux Store.
+* The Redux Store is listening to the game state. When the game state is updated, the store is updated and the changes are reflected on the Client UI.
+* All actions are dispatched from the Redux Store.
+* The game state is shown partially to each player and only contains the minimum necessary information.
 
-1. Clone this repository or, if you're planning to have a repository for your custom game on GitHub, [create a new repository from this template](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) and clone it instead.
-2. Open the directory of your custom game and change `name` field in `package.json` file to the name of your addon name.
-3. Open terminal in that directory and run `npm install` to install dependencies. You also should run `npm update` once in a while to get tool updates.
+### Flow
+Initialization
+* `Dota Server` sends a request to `State Server` to initialize the long polling
 
-After that you can press `Ctrl+Shift+B` in VSCode or run `npm run dev` command in terminal to compile your code and watch for changes.
+Player Action
+* `Player` executes an action on the `Dota Client` through `Redux Dispatch`.
+* The action is validated on the `Dota Client`. If invalid inform the player and stops the flow.
+* If Valid, the Redux dispatch sends an event to `Dota Server`.
+* `Dota Server` send a request with the action info to `State Server`
+* `State Server` processes the request and updates the state of the game.
+* When the state of the game is updated, the long polling response is served to the `Dota Server` with the updated state.
+* `Dota Server` processes the long polling response sending the results to `Dota Client` and re-initializing the long polling with a new request.
 
-## Contents:
+## State Server
+### Requests
+Development:
+* There are some requests that can only be done on development mode. For that we need two things:
+    * Server should allow those calls only when it is on dev mode
+    * Client should only print those call to actions when is on dev mode
 
-* **[src/common]:** TypeScript .d.ts type declaration files with types that can be shared between Panorama and VScripts
-* **[src/vscripts]:** TypeScript code for Dota addon (Lua) vscripts. Compiles lua to game/scripts/vscripts.
-* **[src/panorama]:** TypeScript code for panorama UI. Compiles js to content/panorama/scripts/custom_game
+There are two kind of requests:
+* Client: Returns the result to the client asking.
+* All Clients: Returns the result to all the clients listening.
 
---
-
-* **[game/*]:** Dota game directory containing files such as npc kv files and compiled lua scripts.
-* **[content/*]:** Dota content directory containing panorama sources other than scripts (xml, css, compiled js)
-
---
-
-* **[scripts/*]:** Repository installation scripts
-
-## Continuous Integration
-
-This template includes a [GitHub Actions](https://github.com/features/actions) [workflow](.github/workflows/ci.yml) that builds your custom game on every commit and fails when there are type errors.
+### Requests List
+* Connect:
+    * Endpont "/connect"
+    * Parameters: null
+    * Description: The client initialze a Long Polling comunication with the server.
+* Action:
+    * Endpoint: "/action"
+    * Parameters:
+        * Type
+        * Payload
+    * Description: An action that modifies the current state of the game (moves a unit, attacks, casts an spell, etc). If the action is illegal, the answer is sent to the Client asking. If the action is legal, the state is modified and the answer is sent to All Clients
