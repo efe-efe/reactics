@@ -27,11 +27,11 @@ module.exports = {
       }),*/
     ],
   },
-  entry: "./panorama.index.tsx",
+  entry: "./src/index.tsx",
   context: path.resolve(__dirname),
   output: {
     filename: 'index.js',
-    path: path.resolve(__dirname, "../../content/panorama/layout/custom_game/hud"),
+    path: path.resolve(__dirname, "../../../content/panorama/layout/custom_game/hud"),
     publicPath: "file://{resources}/layout/custom_game/hud",
     clean: false,
   },
@@ -73,7 +73,7 @@ module.exports = {
         test: /\.tsx?$/,
         loader: "ts-loader",
         options: {
-          configFile: "panorama.tsconfig.json"
+          configFile: "tsconfig.json"
         }
       }
     ],
@@ -84,7 +84,7 @@ module.exports = {
     }),
     new ForkTsCheckerWebpackPlugin({
       typescript: {
-        configFile: path.resolve(__dirname, "panorama.tsconfig.json"),
+        configFile: path.resolve(__dirname, "tsconfig.json"),
       },
     })
   ],

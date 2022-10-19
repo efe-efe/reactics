@@ -2,14 +2,14 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: path.join(__dirname, "web.index.tsx"),
+  entry: path.join(__dirname, "index.tsx"),
   output: {
     path: path.join(__dirname, "/dist"),
     filename: "bundle.js",
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "/web/index.html"),
+      template: path.join(__dirname, "index.html"),
     }),
   ],
   resolve: {
@@ -26,7 +26,7 @@ module.exports = {
         test: /\.tsx?$/,
         loader: "ts-loader",
         options: {
-          configFile: "web.tsconfig.json"
+          configFile: "tsconfig.json"
         }
       },
       {

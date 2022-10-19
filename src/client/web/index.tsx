@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import App from "../App";
 
 const Panel: React.FunctionComponent<{ className?: string; id?: string; hittest?: boolean }> = props => {
     return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "react-panorama";
-import App from "./App";
+import App from "../../App";
 
 function initialize() {
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false);

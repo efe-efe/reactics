@@ -6,6 +6,8 @@ module.exports = {
         project: [
             "src/vscripts/tsconfig.json",
             "src/panorama/tsconfig.json",
+            "src/client/panorama/tsconfig.json",
+            "src/client/web/tsconfig.json",
         ]
     },
     plugins: [

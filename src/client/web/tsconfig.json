@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "./web/dist",
+        "outDir": "./dist",
         "target": "es2017",
         "lib": ["es2017", "dom"],
         "types": ["@types/react-dom"],
@@ -10,5 +10,5 @@
         "jsx": "react",
         "module": "esnext"
     },
-    "include": ["web.index.tsx", "./App.tsx"]
+    "include": ["**/*.ts", "**/*.tsx", "../App.tsx"]
 }
