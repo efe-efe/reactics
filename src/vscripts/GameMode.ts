@@ -26,19 +26,20 @@ export class GameMode {
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         CustomGameEventManager.RegisterListener("httpRequest", async (_, eventData) => {
+            print(`[REQUEST][PLAYER = ${eventData.PlayerID}] ${eventData.method}/${eventData.url}`);
+
             const player = PlayerResource.GetPlayer(eventData.PlayerID);
             if (!player) {
                 print(`Event httpRequest ignored because player with id ${eventData.PlayerID} was not found`);
                 return;
             }
 
-            const params: [string, string][] = [["playerId", eventData.PlayerID.toString()]];
-
-            if (eventData.params) {
-                params.push(...decodeFromJson(eventData.params));
-            }
-
-            const response = await sendRequest(eventData.method, eventData.url, params);
+            const response = await sendRequest(
+                eventData.PlayerID,
+                eventData.method,
+                eventData.url,
+                eventData.params != undefined ? decodeFromJson(eventData.params) : []
+            );
             if (!response) return;
 
             CustomGameEventManager.Send_ServerToPlayer(player, "httpResponse", {
@@ -54,7 +55,7 @@ export class GameMode {
 
     private LongPolling(playerId: PlayerID) {
         print(`Player ${playerId} is subscribing ...`);
-        sendRequest("POST", `${SERVER_BASE_URL}/subscribe`, [["playerId", playerId.toString()]])
+        sendRequest(playerId, "POST", `${SERVER_BASE_URL}/subscribe`)
             .then(response => {
                 const parsedBody: ServerUpdate = decodeFromJson(response.Body as unknown as Json<ServerUpdate>);
                 const clientResponse = encodeToJson({

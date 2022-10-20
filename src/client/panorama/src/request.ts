@@ -54,7 +54,7 @@ export function request(
             url: input,
             PlayerID: Game.GetLocalPlayerID(),
             method: init?.method ?? "GET",
-            params: encodeToJson(init?.params ?? []) //THIS SHOULD BE THE BODY PARAMS
+            params: init?.params ? encodeToJson(init.params) : undefined
         });
     });
 

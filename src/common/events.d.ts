@@ -3,7 +3,7 @@ interface HTTPRequest {
     url: string;
     PlayerID: CDOTAPlayerController;
     method: string;
-    params?: Json<[string, string][]>;
+    params: Json<[string, string][]> | undefined;
 }
 
 type HTTPResponseFromServer = {
