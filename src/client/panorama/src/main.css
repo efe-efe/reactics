@@ -1,0 +1,7 @@
+Panel {
+    flow-children: right;
+}
+
+Button {
+    border: 1px solid black;
+}
