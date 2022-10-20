@@ -14,11 +14,15 @@ const Label: React.FunctionComponent<{ text: string }> = props => {
     return <>{props.text}</>;
 };
 
-const Button: React.FunctionComponent<{ onactivate: () => any }> = props => {
+const Button: React.FunctionComponent<{ onactivate: () => unknown }> = props => {
     return <button onClick={props.onactivate}>{props.children}</button>;
 };
 
-const log = (message: any) => console.log(message);
+const log = (message: unknown) => console.log(message);
+
+const request = (url: string) => {
+    return fetch(url)
+}
 
 function initialize() {
     fetch("http://localhost:3000/subscribe", {
@@ -33,4 +37,7 @@ function initialize() {
     }).catch(err => console.log("Couldn't connect to the server: ", err));
 }
 
-ReactDOM.render(<App initialize={initialize} Panel={Panel} Label={Label} Button={Button} log={log} />, document.getElementById("app"));
+ReactDOM.render(
+    <App initialize={initialize} Panel={Panel} Label={Label} Button={Button} log={log} request={request} />,
+    document.getElementById("app")
+);
