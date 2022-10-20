@@ -21,8 +21,8 @@ const Button: React.FunctionComponent<{ onactivate: () => unknown }> = props => 
 const log = (message: unknown) => console.log(message);
 
 const request = (url: string) => {
-    return fetch(url)
-}
+    return fetch(url);
+};
 
 function initialize() {
     fetch("http://localhost:3000/subscribe", {

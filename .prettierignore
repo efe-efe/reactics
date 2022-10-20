@@ -3,4 +3,5 @@
 *.md
 *.css
 index.js
+*.html
 .prettierrc.json
