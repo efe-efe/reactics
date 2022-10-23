@@ -2,8 +2,8 @@ import { reloadable } from "./lib/tstl-utils";
 import { decodeFromJson, encodeToJson, sendRequest } from "./utils";
 
 declare global {
-    interface CDOTAGamerules {
-        addon?: GameMode;
+    interface CDOTAGameRules {
+        Addon: GameMode;
     }
 }
 
@@ -16,7 +16,7 @@ export class GameMode {
     public static Precache(this: void) {}
 
     public static Activate(this: void) {
-        GameRules.addon = new GameMode();
+        GameRules.Addon = new GameMode();
     }
 
     constructor() {
