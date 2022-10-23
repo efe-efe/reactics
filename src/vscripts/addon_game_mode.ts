@@ -6,6 +6,6 @@ Object.assign(getfenv(), {
     Precache: GameMode.Precache
 });
 
-if (GameRules.addon) {
-    GameRules.addon.Reload();
+if (GameRules.Addon !== undefined) {
+    GameRules.Addon.Reload();
 }

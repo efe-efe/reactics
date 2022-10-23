@@ -2,10 +2,11 @@ import React from "react";
 import { render } from "react-panorama";
 import App from "./App";
 import { Provider } from "react-redux";
-import { store } from './store';
+import { store } from "./store";
 
 render(
     <Provider store={store}>
         <App />
-    </Provider>, 
-$.GetContextPanel());
+    </Provider>,
+    $.GetContextPanel()
+);

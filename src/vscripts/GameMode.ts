@@ -1,10 +1,9 @@
-import { csRequestHandler, parseAndHandleCustomRequest } from "./cs_requests";
 import { reloadable } from "./lib/tstl-utils";
-import { decodeFromJson, encodeToJson, registerEventListener, sendRequest } from "./utils";
+import { decodeFromJson, encodeToJson, sendRequest } from "./utils";
 
 declare global {
-    interface CDOTAGamerules {
-        addon?: GameMode;
+    interface CDOTAGameRules {
+        Addon: GameMode;
     }
 }
 
@@ -17,7 +16,7 @@ export class GameMode {
     public static Precache(this: void) {}
 
     public static Activate(this: void) {
-        GameRules.addon = new GameMode();
+        GameRules.Addon = new GameMode();
     }
 
     constructor() {
@@ -25,39 +24,38 @@ export class GameMode {
         ListenToGameEvent("npc_spawned", event => this.OnNpcSpawned(event), undefined);
         ListenToGameEvent("game_rules_state_change", () => this.OnStateChange(), undefined);
 
-        //This links requests with the "csRequestHandler" handler
-        //When a csRequestHandler returns something, we fire the "customResponse" event
-        //So the client can manage it like an async call
-        registerEventListener("customRequest", async (player, event) => {
-            const response = await parseAndHandleCustomRequest(player.GetPlayerID(), event);
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        CustomGameEventManager.RegisterListener("httpRequest", async (_, eventData) => {
+            print(`[REQUEST][PLAYER = ${eventData.PlayerID}] ${eventData.method}/${eventData.url}`);
+
+            const player = PlayerResource.GetPlayer(eventData.PlayerID);
+            if (!player) {
+                print(`Event httpRequest ignored because player with id ${eventData.PlayerID} was not found`);
+                return;
+            }
+
+            const response = await sendRequest(
+                eventData.PlayerID,
+                eventData.method,
+                eventData.url,
+                eventData.params != undefined ? decodeFromJson(eventData.params) : []
+            );
             if (!response) return;
 
-            CustomGameEventManager.Send_ServerToPlayer(player, "customResponse", response);
-            return undefined;
-        });
-
-        csRequestHandler("nextPhase", async id => {
-            const response = await sendRequest("POST", `${SERVER_BASE_URL}/action`, [
-                ["playerId", id.toString()],
-                ["eventName", "nextPhase"]
-            ]);
-
-            return response as unknown as Json<ServerUpdate>;
-        });
-
-        csRequestHandler("previousPhase", async id => {
-            const response = await sendRequest("POST", `${SERVER_BASE_URL}/action`, [
-                ["playerId", id.toString()],
-                ["eventName", "previousPhase"]
-            ]);
-
-            return response as unknown as Json<ServerUpdate>;
+            CustomGameEventManager.Send_ServerToPlayer(player, "httpResponse", {
+                requestId: eventData.requestId,
+                json: encodeToJson({
+                    ok: true,
+                    body: response
+                })
+            });
+            return;
         });
     }
 
     private LongPolling(playerId: PlayerID) {
         print(`Player ${playerId} is subscribing ...`);
-        sendRequest("POST", `${SERVER_BASE_URL}/subscribe`, [["playerId", playerId.toString()]])
+        sendRequest(playerId, "POST", `${SERVER_BASE_URL}/subscribe`)
             .then(response => {
                 const parsedBody: ServerUpdate = decodeFromJson(response.Body as unknown as Json<ServerUpdate>);
                 const clientResponse = encodeToJson({

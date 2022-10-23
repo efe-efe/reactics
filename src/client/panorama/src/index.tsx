@@ -1,6 +1,8 @@
 import React from "react";
 import { render } from "react-panorama";
 import App from "../../App";
+import { request } from "./request";
+import "./main.css";
 
 function initialize() {
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false);
@@ -35,6 +37,8 @@ function initialize() {
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ELEMENT_COUNT, false);
 }
 
-const log = (message: string) => $.Msg(message);
+const log = (message: unknown) => {
+    $.Msg(message);
+};
 
-render(<App initialize={initialize} Panel={Panel} Label={Label} Button={Button} log={log} />, $.GetContextPanel());
+render(<App initialize={initialize} Panel={Panel} Label={Label} Button={Button} log={log} request={request} />, $.GetContextPanel());
